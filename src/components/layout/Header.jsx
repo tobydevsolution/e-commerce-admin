@@ -31,7 +31,7 @@ function Header() {
   const currentPageTitle = getPageTitle(location.pathname);
 
   return (
-    <header className="bg-white p-4 md:p-6 shadow-sm flex items-center justify-between rounded-bl-lg rounded-br-lg z-10 relative">
+    <header className="bg-white p-4 md:p-4 shadow-sm flex items-center justify-between rounded-bl-lg rounded-br-lg z-10 relative">
       {/* Left section: Page Title */}
       <div className="flex items-center">
         <h1 className="text-xl md:text-2xl font-semibold text-gray-800">

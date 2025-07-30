@@ -1,16 +1,14 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Import your page components
+// Import page components
 import DashboardPage from "./pages/DashboardPage";
 import ProductListPage from "./pages/ProductListPage";
-import ProductFormPage from "./pages/ProductFormPage"; // Used for both Create and Edit
+import ProductFormPage from "./pages/ProductFormPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 // Import layout components
 import Sidebar from "./components/layout/Sidebar";
-// You can create a simple Header component later if needed, or remove this import
 import Header from "./components/layout/Header";
 
 function App() {
@@ -25,7 +23,7 @@ function App() {
           <Header />
 
           {/* Main content area where different pages will be rendered */}
-          <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
+          <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-hidden">
             <Routes>
               {/* Route for the Dashboard page (home) */}
               <Route path="/" element={<DashboardPage />} />
