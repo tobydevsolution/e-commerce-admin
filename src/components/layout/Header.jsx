@@ -1,7 +1,6 @@
-// src/components/layout/Header.jsx
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { Search, Bell, User } from "lucide-react"; // Import Lucide icons
+import { Search, Bell, User } from "lucide-react";
 
 function Header() {
   const location = useLocation(); // Get the current location object

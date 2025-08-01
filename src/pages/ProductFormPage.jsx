@@ -1,15 +1,18 @@
 // src/pages/ProductFormPage.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useProducts } from "../context/ProductContext";
+import { useNotifications } from "../context/NotificationContext"; // <-- NEW: Import useNotifications
 
 function ProductFormPage() {
-  const { id } = useParams(); // Get the 'id' parameter from the URL if it exists
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { products, addProduct, updateProduct, getProductById } = useProducts();
+  const { showToast } = useNotifications(); // <-- NEW: Get showToast function from context
 
-  const isEditing = id !== undefined; // Determine if we are in 'edit' mode or 'create' mode
+  const isEditing = id !== undefined;
 
-  // Placeholder for product data state (will be populated from local storage for editing)
-  const [productData, setProductData] = React.useState({
+  const [productData, setProductData] = useState({
     name: "",
     category: "",
     price: "",
@@ -18,22 +21,17 @@ function ProductFormPage() {
     imageUrl: "",
   });
 
-  // Effect to load product data if in editing mode
-  React.useEffect(() => {
+  useEffect(() => {
     if (isEditing) {
-      // In a real app, you'd fetch data from local storage here based on `id`
-      // For now, let's simulate fetching:
-      const dummyProduct = {
-        name: `Edited Product ${id}`,
-        category: "Electronics",
-        price: 299.99,
-        stock: 75,
-        description: "This is a description for an edited product.",
-        imageUrl: "https://placehold.co/100x100/A0B2C3/FFFFFF?text=Product",
-      };
-      setProductData(dummyProduct);
+      const existingProduct = getProductById(id);
+      if (existingProduct) {
+        setProductData(existingProduct);
+      } else {
+        // <-- UPDATED: Use showToast for error if product not found
+        showToast(`Product with ID ${id} not found.`, "error");
+        navigate("/products", { replace: true });
+      }
     } else {
-      // Clear form if we're creating a new product
       setProductData({
         name: "",
         category: "",
@@ -43,28 +41,47 @@ function ProductFormPage() {
         imageUrl: "",
       });
     }
-  }, [id, isEditing]); // Re-run when id changes (e.g., navigating from /new to /edit/1)
+  }, [id, isEditing, getProductById, navigate, showToast]); // <-- UPDATED: Add showToast to dependencies
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    const newValue = type === "number" ? parseFloat(value) : value;
+
     setProductData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, you'd save or update the product in local storage here
-    console.log("Product Data Submitted:", productData);
-    if (isEditing) {
-      console.log(`Updating product with ID: ${id}`);
-      // Call local storage update function
-    } else {
-      console.log("Creating new product");
-      // Call local storage save function
+
+    // Basic validation - <-- UPDATED: Use showToast for validation errors
+    if (
+      !productData.name ||
+      !productData.category ||
+      productData.price === "" ||
+      productData.stock === ""
+    ) {
+      showToast("Please fill in all required fields.", "error");
+      return;
     }
-    // Navigate back to product list after submission
+    if (isNaN(productData.price) || productData.price <= 0) {
+      showToast("Price must be a positive number.", "error");
+      return;
+    }
+    if (isNaN(productData.stock) || productData.stock < 0) {
+      showToast("Stock must be a non-negative number.", "error");
+      return;
+    }
+
+    if (isEditing) {
+      updateProduct(productData);
+      showToast("Product updated successfully!", "success"); // <-- NEW: Show success toast
+    } else {
+      addProduct(productData);
+      showToast("Product added successfully!", "success"); // <-- NEW: Show success toast
+    }
     navigate("/products");
   };
 
@@ -72,7 +89,7 @@ function ProductFormPage() {
     <div className="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">
         {isEditing
-          ? `Edit Product: ${productData.name || id}`
+          ? `Edit Product: ${productData.name || "Loading..."}`
           : "Add New Product"}
       </h1>
 

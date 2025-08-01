@@ -1,4 +1,3 @@
-// src/components/layout/Sidebar.jsx
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
@@ -91,7 +90,7 @@ function Sidebar() {
 
       <div
         className={`p-4 pt-2 border-t border-gray-700 text-sm text-gray-400 text-center overflow-hidden transition-all ${
-          isExpanded ? "w-full" : "w-0"
+          isExpanded ? "w-full" : "w-0 hidden"
         }`}
       >
         &copy; {new Date().getFullYear()} E-commerce Admin

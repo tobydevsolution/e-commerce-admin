@@ -1,64 +1,82 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { DollarSign, ShoppingCart, TrendingUp, Users } from "lucide-react";
+import { FaNairaSign } from "react-icons/fa6";
+import { LuPackage } from "react-icons/lu";
+import { useProducts } from "../context/ProductContext"; // Import useProducts hook
+import { useOrders } from "../context/OrderContext"; // NEW: Import useOrders hook
+import { useUsers } from "../context/UserContext"; // NEW: Import useUsers hook
 
 function DashboardPage() {
+  const { products } = useProducts(); // Get products from the context
+  const { orders } = useOrders(); // NEW: Get orders from the context
+  const { users } = useUsers(); // NEW: Get users from the context
+
+  // Calculate dynamic stats based on actual data
+  const totalProductsCount = products.length;
+  const totalOrdersCount = orders.length; // Dynamic order count
+  const totalUsersCount = users.length; // Dynamic user count
+
+  // Calculate total revenue from orders (assuming each order has a 'total' property)
+  const totalRevenueValue = orders.reduce(
+    (sum, order) => sum + (parseFloat(order.total) || 0),
+    0
+  );
+
   const stats = [
     {
-      title: "Sales",
-      value: "2,500",
-      change: "+12% from last month",
-      progress: 65,
+      title: "Products",
+      value: totalProductsCount.toLocaleString(),
+      change: "+12% from last month", // Placeholder for actual calculation
+      progress: 65, // Placeholder
       bgColor: "bg-yellow-400",
       textColor: "text-white",
-      icon: DollarSign,
+      icon: LuPackage,
     },
     {
       title: "Orders",
-      value: "$2,200",
-      change: "+18% from last month",
-      progress: 80,
+      value: totalOrdersCount.toLocaleString(),
+      change: "+18% from last month", // Placeholder
+      progress: 80, // Placeholder
       bgColor: "bg-emerald-500",
       textColor: "text-white",
       icon: ShoppingCart,
     },
     {
       title: "Users",
-      value: "2,140",
-      change: "+8% from last month",
-      progress: 45,
+      value: totalUsersCount.toLocaleString(),
+      change: "+8% from last month", // Placeholder
+      progress: 45, // Placeholder
       bgColor: "bg-pink-500",
       textColor: "text-white",
       icon: Users,
     },
     {
       title: "Revenue",
-      value: "$950",
-      change: "+22% from last quarter",
-      progress: 72,
+      value: `₦${totalRevenueValue.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      change: "+22% from last quarter", // Placeholder
+      progress: 72, // Placeholder
       bgColor: "bg-blue-500",
       textColor: "text-white",
       icon: TrendingUp,
     },
   ];
 
-  const products = [
-    { id: 1, name: "Premium Headphones", price: "$500", percentage: "190%" },
-    { id: 2, name: "Smart Watch", price: "$350", percentage: "250%" },
-    { id: 3, name: "Wireless Earbuds", price: "$200", percentage: "190%" },
-  ];
-
   return (
     <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md max-w-full overflow-hidden">
       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
-        Dashboard Stats
+        Stats Summary Cards
       </h1>
 
       {/* Stats Cards - Responsive Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {stats.map((stat, index) => (
+        {stats.map((stat) => (
           <div
-            key={index}
-            className={`${stat.bgColor} ${stat.textColor}  p-5 rounded-xl shadow-lg flex flex-col justify-between transition-all hover:shadow-xl hover:-translate-y-1`}
+            key={stat.title}
+            className={`${stat.bgColor} ${stat.textColor} p-5 rounded-xl shadow-lg flex flex-col justify-between transition-all hover:shadow-xl hover:-translate-y-1`}
           >
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -76,10 +94,6 @@ function DashboardPage() {
 
             {/* Progress bar container */}
             <div className="mt-4">
-              <div className="flex justify-between text-xs mb-1">
-                <span>Progress</span>
-                <span>{stat.progress}%</span>
-              </div>
               <div className="w-full bg-white bg-opacity-30 rounded-full h-2">
                 <div
                   className="bg-white h-2 rounded-full"
@@ -92,25 +106,24 @@ function DashboardPage() {
         ))}
       </div>
 
-      {/* Products Section */}
+      {/* Products Section (from Dashboard) */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
             Products
           </h2>
-          <button className="bg-indigo-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm sm:text-base">
+          <Link
+            to="/products/new"
+            className="bg-indigo-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm sm:text-base"
+          >
             <span className="mr-1">+</span> Add Product
-          </button>
+          </Link>
         </div>
 
-        {/* Responsive Table Container */}
         <div className="border border-gray-200 rounded-lg overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  <input type="checkbox" className="form-checkbox h-4 w-4" />
-                </th>
                 <th className="px-4 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   ID
                 </th>
@@ -121,43 +134,55 @@ function DashboardPage() {
                   Price
                 </th>
                 <th className="px-4 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Actions
+                  Stock
                 </th>
-                <th className="px-4 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Growth
+                <th className="px-4 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                  Actions
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {products.map((product) => (
-                <tr key={product.id}>
-                  <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap">
-                    <input type="checkbox" className="form-checkbox h-4 w-4" />
-                  </td>
-                  <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {product.id}
-                  </td>
-                  <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-gray-500">
-                    {product.name}
-                  </td>
-                  <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-gray-500">
-                    {product.price}
-                  </td>
-                  <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button className="text-indigo-600 hover:text-indigo-900 mr-2">
-                      Edit
-                    </button>
-                    <button className="text-red-600 hover:text-red-900">
-                      Delete
-                    </button>
-                  </td>
-                  <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-gray-500">
-                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                      {product.percentage}
-                    </span>
+              {products.length > 0 ? (
+                products.slice(0, 3).map((product) => (
+                  <tr key={product.id}>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {product.id.substring(0, 8)}...
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-gray-900">
+                      {product.name}
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-gray-500">
+                      ₦{parseFloat(product.price).toFixed(2)}
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-gray-500">
+                      {product.stock}
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Link
+                        to={`/products/edit/${product.id}`}
+                        className="text-indigo-600 hover:text-indigo-900 mr-2"
+                      >
+                        Edit
+                      </Link>
+                      {/* Note: Delete from dashboard preview is usually not recommended,
+                          as it bypasses the confirmation modal on the list page.
+                          Keeping it as a placeholder for now, but consider removing. */}
+                      <button className="text-red-600 hover:text-red-900">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="px-4 py-4 text-center text-gray-500"
+                  >
+                    No products found. Add some!
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
