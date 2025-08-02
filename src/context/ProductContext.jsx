@@ -6,7 +6,7 @@ const ProductContext = createContext();
 
 /**
  * ProductProvider component.
- * This component wraps your application (or a part of it)
+ * This component wraps the application (or a part of it)
  * and makes the product data and CRUD functions available to all its children.
  * It uses the useProductsLocalStorage hook to manage the actual data.
  * @param {Object} { children } - React children to be rendered within the provider.

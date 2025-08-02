@@ -1,4 +1,3 @@
-// src/hooks/useOrdersLocalStorage.js
 import { useState, useEffect } from "react";
 import {
   getOrdersFromLocalStorage,

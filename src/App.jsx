@@ -1,13 +1,12 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Import your page components
+// Import page components
 import DashboardPage from "./pages/DashboardPage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductFormPage from "./pages/ProductFormPage";
-import OrdersPage from "./pages/OrdersPage"; // NEW
-import CustomersPage from "./pages/CustomersPage"; // NEW
+import OrdersPage from "./pages/OrdersPage"; //
+import CustomersPage from "./pages/CustomersPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 // Import layout components
@@ -31,7 +30,6 @@ function App() {
               <Route path="/products/edit/:id" element={<ProductFormPage />} />
               <Route path="/orders" element={<OrdersPage />} /> {/* NEW */}
               <Route path="/customers" element={<CustomersPage />} />{" "}
-              {/* NEW */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
