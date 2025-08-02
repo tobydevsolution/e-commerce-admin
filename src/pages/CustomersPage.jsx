@@ -1,4 +1,3 @@
-// src/pages/CustomersPage.jsx
 import React, { useState } from "react";
 import { useUsers } from "../context/UserContext"; // Import useUsers hook
 

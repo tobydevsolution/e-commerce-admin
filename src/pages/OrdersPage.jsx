@@ -1,4 +1,3 @@
-// src/pages/OrdersPage.jsx
 import React, { useState } from "react";
 import { useOrders } from "../context/OrderContext"; // Import useOrders hook
 import { useNotifications } from "../context/NotificationContext"; // For toasts

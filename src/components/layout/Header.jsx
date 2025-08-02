@@ -58,7 +58,7 @@ function Header() {
           aria-label="Notifications"
         >
           <Bell className="h-6 w-6" />
-          {/* Optional: Notification badge */}
+
           <span className="absolute top-1 right-1 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500"></span>
         </button>
 

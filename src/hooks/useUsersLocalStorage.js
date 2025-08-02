@@ -1,4 +1,3 @@
-// src/hooks/useUsersLocalStorage.js
 import { useState, useEffect } from "react";
 import {
   getUsersFromLocalStorage,
@@ -45,8 +44,6 @@ const useUsersLocalStorage = () => {
     saveUsersToLocalStorage(users);
   }, [users]);
 
-  // CRUD operations for Users (mostly Read for now)
-  // Add/Update/Delete functions can be added if needed for admin management
   const getUserById = (id) => {
     return users.find((u) => u.id === id);
   };

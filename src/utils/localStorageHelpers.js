@@ -1,5 +1,3 @@
-// src/utils/localStorageHelpers.js
-
 // Define keys for all data types in localStorage
 export const LOCAL_STORAGE_PRODUCT_KEY = "ecommerce_products";
 export const LOCAL_STORAGE_ORDER_KEY = "ecommerce_orders";

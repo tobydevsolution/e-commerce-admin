@@ -1,14 +1,13 @@
-// src/pages/ProductFormPage.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProducts } from "../context/ProductContext";
-import { useNotifications } from "../context/NotificationContext"; // <-- NEW: Import useNotifications
+import { useNotifications } from "../context/NotificationContext"; //  Import useNotifications
 
 function ProductFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { products, addProduct, updateProduct, getProductById } = useProducts();
-  const { showToast } = useNotifications(); // <-- NEW: Get showToast function from context
+  const { showToast } = useNotifications(); // Get showToast function from context
 
   const isEditing = id !== undefined;
 
@@ -41,7 +40,7 @@ function ProductFormPage() {
         imageUrl: "",
       });
     }
-  }, [id, isEditing, getProductById, navigate, showToast]); // <-- UPDATED: Add showToast to dependencies
+  }, [id, isEditing, getProductById, navigate, showToast]); // Add showToast to dependencies
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -56,7 +55,7 @@ function ProductFormPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation - <-- UPDATED: Use showToast for validation errors
+    // Basic validation - Use showToast for validation errors
     if (
       !productData.name ||
       !productData.category ||
@@ -77,10 +76,10 @@ function ProductFormPage() {
 
     if (isEditing) {
       updateProduct(productData);
-      showToast("Product updated successfully!", "success"); // <-- NEW: Show success toast
+      showToast("Product updated successfully!", "success"); //  Show success toast
     } else {
       addProduct(productData);
-      showToast("Product added successfully!", "success"); // <-- NEW: Show success toast
+      showToast("Product added successfully!", "success"); // Show success toast
     }
     navigate("/products");
   };

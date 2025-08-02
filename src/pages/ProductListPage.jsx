@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useProducts } from "../context/ProductContext";
-import { useNotifications } from "../context/NotificationContext"; // <-- NEW: Import useNotifications
+import { useNotifications } from "../context/NotificationContext"; //  Import useNotifications
 import ConfirmDeleteModal from "../components/modals/ConfirmDeleteModal";
 
 function ProductListPage() {
   const { products, deleteProduct } = useProducts();
-  const { showToast } = useNotifications(); // <-- NEW: Get showToast function
+  const { showToast } = useNotifications(); // Get showToast function
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,7 +28,7 @@ function ProductListPage() {
   const handleConfirmDelete = () => {
     if (productIdToDelete) {
       deleteProduct(productIdToDelete);
-      showToast("Product deleted successfully!", "success"); // <-- NEW: Show success toast after deletion
+      showToast("Product deleted successfully!", "success"); // Show success toast after deletion
     }
     setIsModalOpen(false);
     setProductIdToDelete(null);

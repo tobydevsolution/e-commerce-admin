@@ -1,8 +1,7 @@
-// src/context/ProductContext.jsx
 import React, { createContext, useContext } from "react";
 import useProductsLocalStorage from "../hooks/useLocalStorage";
 
-// Create the context object
+// Creates the context object
 const ProductContext = createContext();
 
 /**

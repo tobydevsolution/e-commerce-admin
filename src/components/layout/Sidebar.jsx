@@ -27,7 +27,7 @@ function Sidebar() {
         isExpanded ? "w-64" : "w-20"
       }`}
     >
-      <div className="p-4 pb-2 flex justify-between items-center border-b border-gray-700">
+      <div className="p-4 pt-7 pb-2 flex justify-between items-center border-b border-gray-700">
         <Link
           to="/"
           className={`overflow-hidden transition-all ${
@@ -46,7 +46,7 @@ function Sidebar() {
         </button>
       </div>
 
-      <nav className="flex-1 px-3 py-4">
+      <nav className="flex-1 px-3 py-4 mt-5">
         <ul className="space-y-2">
           {navItems.map((item) => (
             <li key={item.path}>
